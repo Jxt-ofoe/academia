@@ -30,6 +30,14 @@ npm start            # serves the built app and API on port 3000
 
 Deploy the Node server (not just the static `dist/` folder) to a Node-compatible host. Configure the two Turso environment variables in the host's server environment.
 
+## Deploy to Vercel
+1. Import the repository into Vercel and set the project root to the folder containing `package.json`.
+2. Keep the Vite framework preset, build command `npm run build`, and output directory `dist` (also defined in `vercel.json`).
+3. In **Project Settings → Environment Variables**, add `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` for each environment you deploy (Production, and Preview if needed). These must not have a `VITE_` prefix.
+4. Redeploy after adding or changing environment variables.
+
+The `api/` directory contains Vercel serverless functions for account and data APIs. Vercel deployment does not run `server.js`; that file is only the local/Node-server entry point. `.env` is local-only and is not uploaded from this project, so configure the variables in Vercel itself.
+
 ## Notes
 - App data and accounts are saved in Turso. The browser only keeps the server-managed session cookie.
 - Existing local browser data is imported into Turso when signing up from a browser that has the previous version's data.
