@@ -1,0 +1,6 @@
+@import "tailwindcss";
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;background:#0A0A0C}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#E7E8EC}
+input,select{color-scheme:dark}
