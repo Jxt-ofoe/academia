@@ -20,6 +20,11 @@ academia/
 
 The server creates the account, session, and student-data tables on startup. Passwords are stored as salted scrypt hashes; the browser receives only an HttpOnly session cookie. Timetable slots, quizzes/exams, courses, and grades are stored in the user's Turso record.
 
+## Existing users and data
+The app supports separate personal accounts: each person signs up with a unique Student ID or email, and their data is scoped to that account. Existing accounts and records remain in the configured Turso database; startup uses `CREATE TABLE IF NOT EXISTS` and does not reset or replace those tables.
+
+When deploying an update, configure the same `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` that point to the database currently holding users' data. Do not create a new database or run a reset/import over existing tables. Users should sign in with the same Student ID or email they used before. Legacy data that exists only in a browser is imported when a new account is created; if it cannot be read or validated, signup stops and leaves that browser data untouched.
+
 ## Run (development)
 npm install
 npm run dev          # Vite at http://localhost:5173 and API at http://localhost:3000

@@ -61,16 +61,16 @@ function Auth({onDone}){
         const {data}=await apiRequest("/data");
         onDone(user,data);
       }else{
-        let initialData={slots:[],tests:[],courses:[]};
+        const initialData={};
         try {
-          initialData={
-            slots:JSON.parse(localStorage.getItem("sam_slots")||"[]"),
-            tests:JSON.parse(localStorage.getItem("sam_tests")||"[]"),
-            courses:JSON.parse(localStorage.getItem("sam_courses")||"[]"),
-          };
-          if(!Object.values(initialData).every(Array.isArray)) throw new Error("Invalid saved data");
-        } catch {
-          initialData={slots:[],tests:[],courses:[]};
+          for(const key of ["slots","tests","courses"]){
+            initialData[key]=JSON.parse(localStorage.getItem(`sam_${key}`)||"[]");
+          }
+        } catch(error) {
+          throw new Error(`Could not read your saved browser data. Nothing was changed. ${error.message}`);
+        }
+        if(!Object.values(initialData).every(value=>Array.isArray(value)&&value.length<=500)){
+          throw new Error("Your saved browser data is invalid or too large to import. Nothing was changed.");
         }
         const {user}=await apiRequest("/auth/signup",{method:"POST",body:JSON.stringify({name:f.name,loginId:f.id,password:f.pw,initialData})});
         Object.keys(initialData).forEach(key=>localStorage.removeItem(`sam_${key}`));
